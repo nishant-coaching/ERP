@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import rateLimit from "express-rate-limit";
 import { connectDB } from './config/db.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
 import { startFeeCron } from './jobs/feeCron.js';
@@ -23,6 +24,17 @@ import syllabusRoutes from './routes/syllabusRoutes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
+
+// ✅ MUST be before rate limit
+app.set('trust proxy', 1);
+
+// rate limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+});
+
+app.use(limiter);
 
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(
