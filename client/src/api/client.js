@@ -24,9 +24,10 @@ api.interceptors.response.use(
           localStorage.setItem('accessToken', data.data.accessToken);
           original.headers.Authorization = `Bearer ${data.data.accessToken}`;
           return api(original);
-        } catch {
+        } catch (error) {
+          console.log(error)
           localStorage.clear();
-          window.location.href = '/login';
+          // window.location.href = '/login';
         }
       }
     }
