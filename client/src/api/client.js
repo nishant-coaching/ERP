@@ -20,7 +20,7 @@ api.interceptors.response.use(
       const refresh = localStorage.getItem('refreshToken');
       if (refresh) {
         try {
-          const { data } = await axios.post('/api/auth/refresh', { refreshToken: refresh });
+          const { data } =await axios.post('https://erp-1-6cvn.onrender.com/api/auth/refresh',{ refreshToken: refresh });
           localStorage.setItem('accessToken', data.data.accessToken);
           original.headers.Authorization = `Bearer ${data.data.accessToken}`;
           return api(original);
